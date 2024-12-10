@@ -5,6 +5,11 @@ on:
   pull_request:
     branches: [ main ]
   workflow_dispatch:
+    inputs:
+      test-input:
+        description: 'Test input variable'
+        required: false
+        default: 'Hello from workflow_dispatch'
 
 jobs:
   test:
@@ -14,3 +19,5 @@ jobs:
       
       - name: Run Custom Action
         uses: ./ # Uses the action.yml in the root directory 
+        with:
+          test-input: ${{ inputs.test-input }}
