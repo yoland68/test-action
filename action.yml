@@ -1,65 +1,56 @@
 name: Context and Environment Variables Demo
 
-on:
-  # Trigger on push and manually via workflow_dispatch
-  push:
-    branches: [ main ]
-  workflow_dispatch:
-    inputs:
-      test-input:
-        description: 'Test input variable'
-        required: false
-        default: 'Hello from workflow_dispatch'
+inputs:
+  test-input:
+    description: 'Test input variable'
+    required: false
+    default: 'Hello from workflow_dispatch'
 
-jobs:
-  explore-variables:
-    runs-on: ubuntu-latest
-    env:
-      CUSTOM_ENV: "This is a custom environment variable"
-      
-    steps:
-      - name: Dump GitHub Context
-        env:
-          GITHUB_CONTEXT: ${{ toJSON(github) }}
-        run: |
-          echo "GitHub Context:"
-          echo "$GITHUB_CONTEXT"
+runs:
+  using: composite
+  steps:
+    - name: Dump GitHub Context
+      env:
+        GITHUB_CONTEXT: ${{ toJSON(github) }}
+      run: |
+        echo "GitHub Context:"
+        echo "$GITHUB_CONTEXT"
           
-      - name: Print Common GitHub Variables
-        run: |
-          echo "Repository: ${{ github.repository }}"
-          echo "Ref: ${{ github.ref }}"
-          echo "SHA: ${{ github.sha }}"
-          echo "Workflow: ${{ github.workflow }}"
-          echo "Actor: ${{ github.actor }}"
+    - name: Print Common GitHub Variables
+      run: |
+        echo "Repository: ${{ github.repository }}"
+        echo "Ref: ${{ github.ref }}"
+        echo "SHA: ${{ github.sha }}"
+        echo "Workflow: ${{ github.workflow }}"
+        echo "Actor: ${{ github.actor }}"
+        
+    - name: Print Environment Variables
+      run: |
+        echo "Custom ENV: ${{ env.CUSTOM_ENV }}"
+        echo "Runner OS: ${{ runner.os }}"
+        echo "Home directory: $HOME"
+        echo "GitHub Workspace: $GITHUB_WORKSPACE"
+        echo "GitHub Event Name: $GITHUB_EVENT_NAME"
           
-      - name: Print Environment Variables
-        run: |
-          echo "Custom ENV: ${{ env.CUSTOM_ENV }}"
-          echo "Runner OS: ${{ runner.os }}"
-          echo "Home directory: $HOME"
-          echo "GitHub Workspace: $GITHUB_WORKSPACE"
-          echo "GitHub Event Name: $GITHUB_EVENT_NAME"
+    - name: Print Job and Runner Context
+      env:
+        JOB_CONTEXT: ${{ toJSON(job) }}
+        RUNNER_CONTEXT: ${{ toJSON(runner) }}
+      run: |
+        echo "Job Context:"
+        echo "$JOB_CONTEXT"
+        echo "Runner Context:"
+        echo "$RUNNER_CONTEXT"
           
-      - name: Print Job and Runner Context
-        env:
-          JOB_CONTEXT: ${{ toJSON(job) }}
-          RUNNER_CONTEXT: ${{ toJSON(runner) }}
-        run: |
-          echo "Job Context:"
-          echo "$JOB_CONTEXT"
-          echo "Runner Context:"
-          echo "$RUNNER_CONTEXT"
+    - name: Print Matrix Context (if any)
+      if: ${{ contains(github.workflow, 'matrix') }}
+      env:
+        MATRIX_CONTEXT: ${{ toJSON(matrix) }}
+      run: |
+        echo "Matrix Context:"
+        echo "$MATRIX_CONTEXT"
           
-      - name: Print Matrix Context (if any)
-        if: ${{ contains(github.workflow, 'matrix') }}
-        env:
-          MATRIX_CONTEXT: ${{ toJSON(matrix) }}
-        run: |
-          echo "Matrix Context:"
-          echo "$MATRIX_CONTEXT"
-          
-      - name: Print Workflow Dispatch Inputs
-        if: ${{ github.event_name == 'workflow_dispatch' }}
-        run: |
-          echo "Test Input: ${{ github.event.inputs.test-input }}"
+    - name: Print Workflow Dispatch Inputs
+      if: ${{ github.event_name == 'workflow_dispatch' }}
+      run: |
+        echo "Test Input: ${{ github.event.inputs.test-input }}"
