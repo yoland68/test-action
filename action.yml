@@ -14,12 +14,14 @@ runs:
         GITHUB_CONTEXT: ${{ toJSON(github) }}
       shell: bash
       run: |
+        : Dump GitHub Context
         echo "GitHub Context:"
         echo "$GITHUB_CONTEXT"
           
     - name: Print Common GitHub Variables
       shell: bash
       run: |
+        : Print Common GitHub Variables
         echo "Repository: ${{ github.repository }}"
         echo "Ref: ${{ github.ref }}"
         echo "SHA: ${{ github.sha }}"
@@ -29,6 +31,7 @@ runs:
     - name: Print Environment Variables
       shell: bash
       run: |
+        : Print Environment Variables
         echo "Custom ENV: ${{ env.CUSTOM_ENV }}"
         echo "Runner OS: ${{ runner.os }}"
         echo "Home directory: $HOME"
@@ -41,6 +44,7 @@ runs:
         RUNNER_CONTEXT: ${{ toJSON(runner) }}
       shell: bash
       run: |
+        : Print Job and Runner Context
         echo "Job Context:"
         echo "$JOB_CONTEXT"
         echo "Runner Context:"
@@ -52,6 +56,7 @@ runs:
         MATRIX_CONTEXT: ${{ toJSON(matrix) }}
       shell: bash
       run: |
+        : Print Matrix Context (if any)
         echo "Matrix Context:"
         echo "$MATRIX_CONTEXT"
           
@@ -59,4 +64,5 @@ runs:
       if: ${{ github.event_name == 'workflow_dispatch' }}
       shell: bash
       run: |
+        : Print Workflow Dispatch Inputs
         echo "Test Input: ${{ github.event.inputs.test-input }}"
