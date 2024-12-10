@@ -5,6 +5,69 @@ inputs:
     description: 'Test input variable'
     required: false
     default: 'Hello from workflow_dispatch'
+  os:
+    description: "Operating System. macos, linux, windows."
+    required: true
+    default: ""
+  python_version:
+    description: "Python Version. Will be used in the conda install command for pytorch. 3.9 or 3.10. Only valid when os is linux or windows."
+    required: false
+    default: "3.9"
+  cuda_version:
+    description: "CUDA Version. Will be used in the conda install command for pytorch."
+    required: false
+    default: "12.1"
+  torch_version:
+    description: "Pytorch Version type, 'stable', 'nightly', 'specific'"
+    required: false
+    default: 'stable'
+  specific_torch_install:
+    description: "Command for installing specific torch version. E.g. `conda install bla bla`"
+    required: false
+    default: ''
+  models-json:
+    description: 'JSON string containing models and their download URLs. The models will be downloaded into the exact directory relative to /ComfyUI/models/. eg { "model_name": { url: "https://example.com/model.pth", "directory": "checkpoints" } }'
+    required: false
+  workflow_filenames:
+    description: "The list of workflow filenames is listed in the workflows/ directory. Separate by comma, e.g., 'workflow1.json,workflow2.json'."
+    required: false
+    default: 'auto'
+  comfyui_flags:
+    description: "Flags to pass to the comfyui application. eg. --force-fp16"
+    required: false
+    default: ''
+  use_prior_commit:
+    description: "Specify 'true' to use the prior commit, or 'false' to use the current commit."
+    required: false
+    default: 'false'
+  # Not yet supported
+  workflow_raw_json:
+    description: "Workflow's raw json file"
+    required: false
+    default: ''
+  timeout:
+    description: "Timeout for the workflow (in seconds)"
+    required: false
+    default: "600"
+  google_credentials:
+    description: "Service Account JSON for uploading to GCS. Required if you want results uploaded to CI dashboard. https://ci.comfy.org"
+    required: false
+  gcs_bucket_name:
+    description: "Name of the GCS bucket to upload the output files to. Required if you want results uploaded to CI dashboard. https://ci.comfy.org"
+    required: false
+    default: "comfy-ci-results"
+  output_prefix:
+    description: "Prefix for the output files. Required if you want results uploaded to CI dashboard. https://ci.comfy.org"
+    required: false
+    default: "ComfyUI"
+  api_endpoint:
+    description: "Comfy Org API endpoint"
+    required: false
+    default: "https://api.comfy.org/upload-artifact"
+  skip_quickci:
+    description: "Skip quickci."
+    required: false
+    default: "true"
 
 runs:
   using: composite

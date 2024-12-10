@@ -21,3 +21,9 @@ jobs:
         uses: ./ # Uses the action.yml in the root directory 
         with:
           test-input: ${{ inputs.test-input }}
+          python_version: '3.10'
+          cuda_version: '12.1'
+          torch_version: 'specific'
+          workflow_filenames: 'workflow1.json,workflow2.json'
+          comfyui_flags: '--force-fp16'
+          use_prior_commit: 'true'
