@@ -83,6 +83,8 @@ runs:
           
     - name: Print Common GitHub Variables
       shell: bash
+      env:
+        PYTHON_VERSION: ${{ inputs.python_version }}
       run: |
         : Print Common GitHub Variables
         echo "Repository: ${{ github.repository }}"
@@ -90,6 +92,8 @@ runs:
         echo "SHA: ${{ github.sha }}"
         echo "Workflow: ${{ github.workflow }}"
         echo "Actor: ${{ github.actor }}"
+        echo "Python Version: ${{ env.PYTHON_VERSION }}"
+        echo "Python Version: $PYTHON_VERSION"
         
     - name: Print Environment Variables
       shell: bash
