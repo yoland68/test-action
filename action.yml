@@ -133,3 +133,64 @@ runs:
       run: |
         : Print Workflow Dispatch Inputs
         echo "Test Input: ${{ github.event.inputs.test-input }}"
+
+    - name: Dump GitHub Context
+      if: inputs.os == 'windows'
+      env:
+        GITHUB_CONTEXT: ${{ toJSON(github) }}
+      shell: pwsh
+      run: |
+        Write-Host "GitHub Context:"
+        Write-Host $env:GITHUB_CONTEXT
+          
+    - name: Print Common GitHub Variables
+      if: inputs.os == 'windows'
+      shell: pwsh
+      env:
+        PYTHON_VERSION: ${{ inputs.python_version }}
+      run: |
+        Write-Host "Repository: ${{ github.repository }}"
+        Write-Host "Ref: ${{ github.ref }}"
+        Write-Host "SHA: ${{ github.sha }}"
+        Write-Host "Workflow: ${{ github.workflow }}"
+        Write-Host "Actor: ${{ github.actor }}"
+        Write-Host "Python Version: ${{ env.PYTHON_VERSION }}"
+        Write-Host "Python Version: $env:PYTHON_VERSION"
+        
+    - name: Print Environment Variables
+      if: inputs.os == 'windows'
+      shell: pwsh
+      run: |
+        Write-Host "Custom ENV: ${{ env.CUSTOM_ENV }}"
+        Write-Host "Runner OS: ${{ runner.os }}"
+        Write-Host "Home directory: $env:USERPROFILE"
+        Write-Host "GitHub Workspace: $env:GITHUB_WORKSPACE"
+        Write-Host "GitHub Event Name: $env:GITHUB_EVENT_NAME"
+          
+    - name: Print Job and Runner Context
+      if: inputs.os == 'windows'
+      env:
+        JOB_CONTEXT: ${{ toJSON(job) }}
+        RUNNER_CONTEXT: ${{ toJSON(runner) }}
+      shell: pwsh
+      run: |
+        Write-Host "Job Context:"
+        Write-Host $env:JOB_CONTEXT
+        Write-Host "Runner Context:"
+        Write-Host $env:RUNNER_CONTEXT
+          
+    - name: Print Matrix Context (if any)
+      if: ${{ contains(github.workflow, 'matrix') && inputs.os == 'windows' }}
+      env:
+        MATRIX_CONTEXT: ${{ toJSON(matrix) }}
+      shell: pwsh
+      run: |
+        Write-Host "Matrix Context:"
+        Write-Host $env:MATRIX_CONTEXT
+          
+    - name: Print Workflow Dispatch Inputs
+      if: ${{ github.event_name == 'workflow_dispatch' }}
+      shell: bash
+      run: |
+        : Print Workflow Dispatch Inputs
+        echo "Test Input: ${{ github.event.inputs.test-input }}"
