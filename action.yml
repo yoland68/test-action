@@ -92,8 +92,8 @@ runs:
         echo "SHA: ${{ github.sha }}"
         echo "Workflow: ${{ github.workflow }}"
         echo "Actor: ${{ github.actor }}"
-        echo "Python Version: ${{ env.PYTHON_VERSION }}"
-        echo "Python Version: $PYTHON_VERSION"
+        echo Python Version ${{ env.PYTHON_VERSION }}
+        echo Python Version $PYTHON_VERSION
         
     - name: Print Environment Variables
       shell: bash
